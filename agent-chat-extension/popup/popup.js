@@ -12,9 +12,7 @@ const trimBody = (body, maxLines = 3) => {
     return cleanedBody.slice(0, maxLines).join("\n") + (cleanedBody.length > maxLines ? "..." : "");
   };
   
-  
-
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const progressStatus = document.getElementById("progress-status");
     const progressFill = document.getElementById("progress-fill");
     const emailDetails = document.getElementById("email-details");
@@ -23,8 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const analysisResults = document.getElementById("analysis-results");
     const scamStatus = document.getElementById("scam-status");
     const scamDescription = document.getElementById("scam-description");
+    const settingsButton = document.getElementById("settings-button");
+    const settingsPanel = document.getElementById("settings-panel");
+    const settingsForm = document.getElementById("settings-form");
   
-    if (!progressStatus || !progressFill || !emailDetails || !emailSubject || !emailBody || !analysisResults || !scamStatus || !scamDescription) {
+    if (!progressStatus || !progressFill || !emailDetails || !emailSubject || !emailBody || !analysisResults || !scamStatus || !scamDescription || !settingsButton || !settingsPanel || !settingsForm) {
       console.error("One or more required elements are missing from the DOM.");
       return;
     }
@@ -33,6 +34,29 @@ document.addEventListener("DOMContentLoaded", () => {
       progressStatus.textContent = status;
       progressFill.style.width = `${progress}%`;
     };
+  
+    // Toggle Settings Panel
+    settingsButton.addEventListener("click", () => {
+      const isVisible = settingsPanel.style.display === "block";
+      settingsPanel.style.display = isVisible ? "none" : "block";
+    });
+  
+    // Save User Selection to Chrome Storage
+    settingsForm.addEventListener("change", (event) => {
+      const selectedSource = event.target.value;
+      chrome.storage.local.set({ scamDetectionSource: selectedSource }, () => {
+        console.log("Scam detection source saved:", selectedSource);
+      });
+    });
+  
+    // Load Saved Source Preference
+    chrome.storage.local.get("scamDetectionSource", (data) => {
+      const savedSource = data.scamDetectionSource || "reddit"; // Default to Reddit
+      const radioButton = document.querySelector(`input[value="${savedSource}"]`);
+      if (radioButton) {
+        radioButton.checked = true;
+      }
+    });
   
     updateProgress("Initializing...", 10);
   
@@ -55,29 +79,36 @@ document.addEventListener("DOMContentLoaded", () => {
   
         updateProgress("Sending to API...", 70);
   
-        // Call the Flask API
-        fetch("http://127.0.0.1:5000/email", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ subject, body }),
-        })
-          .then((apiResponse) => apiResponse.json())
-          .then((data) => {
-            console.log("API Response:", data);
-            updateProgress("Analysis complete!", 100);
+        // Get saved source and include it in the API request
+        chrome.storage.local.get("scamDetectionSource", (data) => {
+          const scamDetectionSource = data.scamDetectionSource || "reddit";
   
-            // Update UI with scam status
-            scamStatus.textContent = data.is_scam ? "🚨🚨 This email is a scam! 🚨🚨" : "✅ This email is not a scam.";
-            scamDescription.textContent = data.description;
-  
-            analysisResults.style.display = "block";
+          // Call the Flask API
+          fetch("http://127.0.0.1:5000/email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ subject, body, source: scamDetectionSource }),
           })
-          .catch((error) => {
-            console.error("Error calling API:", error);
-            updateProgress("Failed to call API.", 100);
-          });
+            .then((apiResponse) => apiResponse.json())
+            .then((data) => {
+              console.log("API Response:", data);
+              updateProgress("Analysis complete!", 100);
+  
+              // Update UI with scam status
+              scamStatus.textContent = data.is_scam
+                ? "🚨🚨 This email is a scam! 🚨🚨"
+                : "✅ This email is not a scam.";
+              scamDescription.textContent = data.description;
+  
+              analysisResults.style.display = "block";
+            })
+            .catch((error) => {
+              console.error("Error calling API:", error);
+              updateProgress("Failed to call API.", 100);
+            });
+        });
       });
     });
   });

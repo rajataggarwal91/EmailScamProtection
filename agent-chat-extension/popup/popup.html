@@ -3,25 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Analyzer</title>
+  <title>Email Fraud Scanner</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-  <div id="progress-container">
-    <h1>🛡️ Email Fraud Scanner 🛡️</h1>
-    <div id="progress-status">Initializing...</div>
-    <div id="progress-bar">
-      <div id="progress-fill"></div>
+  <div id="popup-container">
+    <!-- Header with Settings Button -->
+    <div id="header-container">
+      <h1>🛡️ Email Fraud Scanner 🛡️</h1>
+      <button id="settings-button" class="settings-btn">⚙️</button>
     </div>
-    <div id="email-details" style="display: none;">
-      <strong>Subject:</strong>
-      <p id="email-subject">Loading...</p>
-      <strong>Body:</strong>
-      <p id="email-body">Loading...</p>
+
+    <!-- Main Content -->
+    <div id="progress-container">
+      <div id="progress-status">Initializing...</div>
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="email-details" style="display: none;">
+        <strong>Subject:</strong>
+        <p id="email-subject">Loading...</p>
+        <strong>Body:</strong>
+        <p id="email-body">Loading...</p>
+      </div>
+      <div id="analysis-results" style="display: none;">
+        <h2 id="scam-status"></h2>
+        <p id="scam-description"></p>
+      </div>
     </div>
-    <div id="analysis-results" style="display: none;">
-      <h2 id="scam-status"></h2>
-      <p id="scam-description"></p>
+
+    <!-- Settings Panel -->
+    <div id="settings-panel" style="display: none;">
+      <h3>Settings</h3>
+      <form id="settings-form">
+        <label>
+          <input type="radio" name="source" value="reddit" checked>
+          Use Reddit to detect scams
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="source" value="other">
+          Use other sources
+        </label>
+      </form>
     </div>
   </div>
   <script src="popup.js"></script>
