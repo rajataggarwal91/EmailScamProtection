@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Reader</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <div id="progress-container">
+    <h1>Email Analysis</h1>
+    <div id="progress-status">Initializing...</div>
+    <div id="progress-bar">
+      <div id="progress-fill"></div>
+    </div>
+    <div id="email-details" style="display: none;">
+      <strong>Subject:</strong>
+      <p id="email-subject">Loading...</p>
+      <strong>Body:</strong>
+      <p id="email-body">Loading...</p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
