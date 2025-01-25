@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Reader</title>
+  <title>Email Analyzer</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
   <div id="progress-container">
-    <h1>Email Analysis</h1>
+    <h1>🛡️ Email Fraud Scanner 🛡️</h1>
     <div id="progress-status">Initializing...</div>
     <div id="progress-bar">
       <div id="progress-fill"></div>
@@ -18,6 +18,10 @@
       <p id="email-subject">Loading...</p>
       <strong>Body:</strong>
       <p id="email-body">Loading...</p>
+    </div>
+    <div id="analysis-results" style="display: none;">
+      <h2 id="scam-status"></h2>
+      <p id="scam-description"></p>
     </div>
   </div>
   <script src="popup.js"></script>
