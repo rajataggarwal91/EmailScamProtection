@@ -4,7 +4,7 @@ import os
 
 log = logger.getLogger()
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GEMINI_API_KEY = "AIzaSyBpjftsU6sqNFfmKP9wY6brUqjWlstR3s0"
 
 generation_config = {
     "temperature": 0.1,

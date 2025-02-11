@@ -26,10 +26,9 @@ def add_vector():
     Expects a JSON body with 'vector' (list of floats) and optional 'metadata' (dict).
     """
 
-    with open(
-        "/Users/raggarwal/hack_2024/2025/backend/reddit_scams_data.txt", "r"
-    ) as f:
+    with open("backend/reddit_scams_data_cleaned.txt", "r") as f:
         data = f.read()
+
     sentences, embeddings = et.get_embeddings(data)
     vector_data.extend(sentences)
 

@@ -25,10 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const settingsPanel = document.getElementById("settings-panel");
   const settingsForm = document.getElementById("settings-form");
 
-  if (!progressStatus || !progressFill || !emailDetails || !emailSubject || !emailBody || !analysisResults || !scamStatus || !scamDescription || !settingsButton || !settingsPanel || !settingsForm) {
-    console.error("One or more required elements are missing from the DOM.");
-    return;
-  }
+  // if (!progressStatus || !progressFill || !emailDetails || !emailSubject || !emailBody || !analysisResults || !scamStatus || !scamDescription || !settingsButton || !settingsPanel || !settingsForm) {
+  //   console.error("One or more required elements are missing from the DOM.");
+  //   return;
+  // }
 
   const updateProgress = (status, progress) => {
     progressStatus.textContent = status;
@@ -73,9 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const subject = response.subject || "No subject found.";
       const body = response.body || "No body content found.";
 
-      emailSubject.textContent = subject;
-      emailBody.textContent = trimBody(body);
-      emailDetails.style.display = "block";
+      // emailSubject.textContent = subject;
+      // emailBody.textContent = trimBody(body);
+      emailDetails.style.display = "hidden";
 
       updateProgress("Sending to API...", 70);
 
